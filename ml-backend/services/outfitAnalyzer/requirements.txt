@@ -1,0 +1,13 @@
+azure-core
+azure-search-documents
+azure-ai-language-conversations
+fastapi
+httpx
+openai
+jinja2
+pydantic
+pytest
+python-dotenv
+uvicorn
+azure-identity
+azure-ai-inference

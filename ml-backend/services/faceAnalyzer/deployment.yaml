@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: face-analyzer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: face-analyzer
+  template:
+    metadata:
+      labels:
+        app: face-analyzer
+    spec:
+      containers:
+        - name: face-analyzer
+          image: fashionmateregistry.azurecr.io/face-analyzer:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: PREDICTOR_PATH
+              value: "/app/src/model/shape_predictor_68_face_landmarks.dat"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: face-analyzer-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: face-analyzer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloth-analyzer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloth-analyzer
+  template:
+    metadata:
+      labels:
+        app: cloth-analyzer
+    spec:
+      containers:
+        - name: cloth-analyzer
+          image: fashionmateregistry.azurecr.io/cloth-analyzer:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: AZURE_OPENAI_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: azure-ai-service-secrets
+                  key: AZURE_OPENAI_ENDPOINT
+            - name: AZURE_OPENAI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure-ai-service-secrets
+                  key: AZURE_OPENAI_KEY
+            - name: AZURE_OPENAI_API_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: azure-ai-service-secrets
+                  key: AZURE_OPENAI_API_VERSION
+            - name: AZURE_OPENAI_DEPLOYMENT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: azure-ai-service-secrets
+                  key: AZURE_OPENAI_DEPLOYMENT_NAME
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloth-analyzer-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloth-analyzer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

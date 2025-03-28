@@ -1,0 +1,21 @@
+{
+    "user_id": "user-1234",
+    "occasion": "business meeting",
+    "user_features": {
+        "height_cm": 175,
+        "weight_kg": 70,
+        "age": 32,
+        "gender": "male",
+        "style": "professional",
+        "body_shape": "pear",
+        "body_proportion": "balanced",
+        "face_shape": "oval",
+        "eye_shape": "almond",
+        "skin_tone": "warm",
+        "hair_color": "brown",
+        "face_image_url": "https://blobresource.blob.core.windows.net/user-1234/personal/face.jpg",
+        "body_image_url": "https://blobresource.blob.core.windows.net/user-1234/personal/body.jpg",
+        "created_at": 1710950000000,
+        "updadated_at": 1710950000000
+    }
+}

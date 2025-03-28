@@ -1,0 +1,7 @@
+uvicorn
+fastapi
+opencv-python
+requests
+mediapipe
+matplotlib
+pytest

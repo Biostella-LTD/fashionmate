@@ -1,0 +1,143 @@
+name: Run Python Tests
+
+on:
+  push:
+
+jobs:
+  test_faceAnalyzer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
+          pip list
+          python -m pip install --upgrade pip
+          pip install -r "ml-backend/services/faceAnalyzer/requirements.txt"
+          pip list
+          pytest ml-backend/services/faceAnalyzer/tests --maxfail=5
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs_face_analyzer
+          path: |
+            ${{ github.workspace }}/ml-backend/services/faceAnalyzer/logs/face_analyzer.log
+
+  test_bodyAnalyzer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
+          pip list
+          python -m pip install --upgrade pip
+          pip install -r "ml-backend/services/bodyAnalyzer/requirements.txt"
+          pip list
+          pytest ml-backend/services/bodyAnalyzer/tests --maxfail=5
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs_body_analyzer
+          path: |
+            ${{ github.workspace }}/ml-backend/services/bodyAnalyzer/logs/body_analyzer.log
+
+  test_clothAnalyzer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
+          pip list
+          python -m pip install --upgrade pip
+          pip install -r "ml-backend/services/clothAnalyzer/requirements.txt"
+          pip list
+          pytest ml-backend/services/clothAnalyzer/tests --maxfail=5
+
+        env:
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs_cloth_analyzer
+          path: |
+            ${{ github.workspace }}/ml-backend/services/clothAnalyzer/logs/cloth_analyzer.log
+
+  test_outfitAnalyzer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
+          pip list
+          python -m pip install --upgrade pip
+          pip install -r "ml-backend/services/outfitAnalyzer/requirements.txt"
+          pip list
+          pytest ml-backend/services/outfitAnalyzer/tests --maxfail=5
+
+        env:
+          AZURE_SEARCH_ENDPOINT: ${{ secrets.AZURE_SEARCH_ENDPOINT }}
+          AZURE_SEARCH_KEY: ${{ secrets.AZURE_SEARCH_KEY }}
+          AZURE_SEARCH_INDEX: ${{ secrets.AZURE_SEARCH_INDEX }}
+
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+
+          AZURE_OPENAI_COMPLETION_ENDPOINT: ${{ secrets.AZURE_OPENAI_COMPLETION_ENDPOINT }}
+
+          AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs_outfit_analyzer
+          path: |
+            ${{ github.workspace }}/ml-backend/services/outfitAnalyzer/logs/outfit_analyzer.log
